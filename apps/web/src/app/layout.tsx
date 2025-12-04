@@ -1,6 +1,9 @@
 import { Inter } from 'next/font/google';
 import { ClerkProvider } from '@clerk/nextjs';
+import { Box } from '@mui/material';
 import ThemeProvider from '@/components/ThemeProvider';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -21,17 +24,32 @@ export default function RootLayout({
     <html lang="es">
       <body className={inter.className}>
         <ThemeProvider>
-          {clerkPublishableKey ? (
-            <ClerkProvider publishableKey={clerkPublishableKey}>
-              {children}
-            </ClerkProvider>
-          ) : (
-            children
-          )}
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              minHeight: '100vh',
+            }}
+          >
+            <Header />
+            <Box
+              component="main"
+              sx={{
+                flexGrow: 1,
+              }}
+            >
+              {clerkPublishableKey ? (
+                <ClerkProvider publishableKey={clerkPublishableKey}>
+                  {children}
+                </ClerkProvider>
+              ) : (
+                children
+              )}
+            </Box>
+            <Footer />
+          </Box>
         </ThemeProvider>
       </body>
     </html>
   );
 }
-
-
