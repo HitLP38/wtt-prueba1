@@ -4,10 +4,17 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  Index,
 } from 'typeorm';
 import { MatchStatus, MatchType } from '@wtt/common';
 
 @Entity('matches')
+@Index(['eventId']) // Consultas por evento
+@Index(['status']) // Filtrado por estado (muy frecuente en WebSockets)
+@Index(['tableNumber']) // Búsqueda por mesa
+@Index(['eventId', 'status']) // Consultas combinadas evento + estado
+@Index(['round']) // Consultas por ronda
+@Index(['refereeId']) // Consultas por árbitro
 export class Match {
   @PrimaryGeneratedColumn('uuid')
   id: string;

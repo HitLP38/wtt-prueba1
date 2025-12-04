@@ -4,9 +4,12 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  Index,
 } from 'typeorm';
 
 @Entity('events')
+@Index(['startDate', 'endDate']) // Para consultas de eventos por rango de fechas
+@Index(['isActive']) // Para filtrar eventos activos rápidamente
 export class Event {
   @PrimaryGeneratedColumn('uuid')
   id: string;

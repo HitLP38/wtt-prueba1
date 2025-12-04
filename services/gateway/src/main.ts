@@ -1,9 +1,17 @@
 import { NestFactory } from '@nestjs/core';
-import { ValidationPipe } from '@nestjs/common';
+import { ValidationPipe, Logger } from '@nestjs/common';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const logger = new Logger('Bootstrap');
+  const isProduction = process.env.NODE_ENV === 'production';
+  
+  const app = await NestFactory.create(AppModule, {
+    // Logging: Solo warn/error en producción
+    logger: isProduction
+      ? ['warn', 'error']
+      : ['log', 'debug', 'warn', 'error'],
+  });
   
   // Global prefix
   app.setGlobalPrefix('api');
@@ -25,7 +33,10 @@ async function bootstrap() {
   
   const port = process.env.PORT || 3001;
   await app.listen(port);
-  console.log(`🚀 Gateway running on: http://localhost:${port}`);
+  
+  logger.log(`🚀 Gateway running on: http://localhost:${port}`);
+  logger.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
+  logger.log(`🛡️ Rate Limiting: Enabled (100 req/min)`);
 }
 
 bootstrap();

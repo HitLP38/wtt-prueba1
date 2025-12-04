@@ -4,10 +4,15 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  Index,
 } from 'typeorm';
 import { InscriptionStatus } from '@wtt/common';
 
 @Entity('inscriptions')
+@Index(['eventId']) // Consultas por evento (muy frecuente)
+@Index(['playerId']) // Consultas por jugador
+@Index(['status']) // Filtrado por estado
+@Index(['eventId', 'status']) // Consultas combinadas evento + estado
 export class Inscription {
   @PrimaryGeneratedColumn('uuid')
   id: string;

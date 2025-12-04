@@ -20,6 +20,10 @@ import {
   Divider,
   Alert,
   Chip,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  FormControl,
 } from '@mui/material';
 import {
   CheckCircle as CheckCircleIcon,
@@ -229,33 +233,51 @@ export default function InscripcionesPage() {
                     }}
                   />
 
-                  {/* Número de jugadores y botón Registrar */}
-                  <Stack spacing={3} direction={{ xs: 'column', sm: 'row' }} alignItems="center">
+                  {/* Número de jugadores con Radio Buttons */}
+                  <Stack spacing={3} direction={{ xs: 'column', sm: 'row' }} alignItems="flex-end">
                     <Box sx={{ flex: 1 }}>
                       <Typography variant="body1" sx={{ mb: 1, fontWeight: 500 }}>
                         Numero de jugadores
                       </Typography>
-                      <TextField
-                        type="number"
-                        value={playerCount}
-                        onChange={(e) => {
-                          const value = parseInt(e.target.value) || 4;
-                          if (value >= 4 && value <= 5) {
-                            setPlayerCount(value);
-                          }
-                        }}
-                        inputProps={{
-                          min: 4,
-                          max: 5,
-                          step: 1,
-                        }}
-                        fullWidth
-                        sx={{
-                          '& .MuiOutlinedInput-root': {
-                            borderRadius: 2,
-                          },
-                        }}
-                      />
+                      <FormControl component="fieldset" fullWidth>
+                        <RadioGroup
+                          row
+                          value={playerCount.toString()}
+                          onChange={(e) => setPlayerCount(parseInt(e.target.value))}
+                          sx={{
+                            '& .MuiFormControlLabel-root': {
+                              marginRight: 3,
+                            },
+                          }}
+                        >
+                          <FormControlLabel
+                            value="4"
+                            control={<Radio />}
+                            label="4"
+                            sx={{
+                              '& .MuiRadio-root': {
+                                color: '#7C3AED',
+                              },
+                              '& .Mui-checked': {
+                                color: '#7C3AED',
+                              },
+                            }}
+                          />
+                          <FormControlLabel
+                            value="5"
+                            control={<Radio />}
+                            label="5"
+                            sx={{
+                              '& .MuiRadio-root': {
+                                color: '#7C3AED',
+                              },
+                              '& .Mui-checked': {
+                                color: '#7C3AED',
+                              },
+                            }}
+                          />
+                        </RadioGroup>
+                      </FormControl>
                     </Box>
 
                     <Button
@@ -270,6 +292,7 @@ export default function InscripcionesPage() {
                         px: 4,
                         py: 1.5,
                         minWidth: 150,
+                        background: 'linear-gradient(90deg, #7C3AED 0%, #2563EB 100%)',
                       }}
                     >
                       Siguiente
@@ -560,66 +583,100 @@ export default function InscripcionesPage() {
                   mx: 'auto',
                 }}
               >
-                <Typography
-                  variant="h4"
-                  sx={{ fontWeight: 700, mb: 3, textAlign: 'center' }}
-                >
-                  Resumen de jugadores
-                </Typography>
-
-                {/* Información del Equipo */}
-                <Card
-                  elevation={2}
+                {/* Información del Equipo - Recuadro Azul Claro */}
+                <Box
                   sx={{
-                    p: 2,
+                    backgroundColor: '#E3F2FD',
                     borderRadius: 2,
-                    backgroundColor: 'rgba(124, 58, 237, 0.1)',
+                    p: 2.5,
                     mb: 3,
                   }}
                 >
-                  <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
+                  <Typography
+                    variant="h5"
+                    sx={{
+                      fontWeight: 600,
+                      mb: 0.5,
+                      fontSize: '1.5rem',
+                      color: '#1976D2',
+                    }}
+                  >
                     {teamName}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {teamMembers.length} {teamMembers.length === 1 ? 'integrante' : 'integrantes'}
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      fontSize: '0.875rem',
+                      color: '#666',
+                    }}
+                  >
+                    Cantidad de integrantes : {teamMembers.length}
                   </Typography>
-                </Card>
+                </Box>
 
+                {/* Lista de Jugadores */}
                 <Stack spacing={2} sx={{ mb: 4 }}>
                   {teamMembers.map((member, index) => {
-                    const label = condiciones.find((c) => c.value === member.condicion)?.label || '';
+                    const condicionLabel = condiciones.find((c) => c.value === member.condicion)?.label || '';
+                    const condicionColor = getCondicionColor(member.condicion);
                     return (
-                      <Card
+                      <Box
                         key={member.id}
-                        elevation={2}
                         sx={{
-                          p: 2,
-                          borderRadius: 2,
-                          backgroundColor: 'rgba(0, 0, 0, 0.02)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          gap: 1,
                         }}
                       >
-                        <Typography variant="body1" sx={{ fontWeight: 600 }}>
-                          Jugador {index + 1} - {label}
+                        <Typography
+                          variant="body1"
+                          sx={{
+                            fontWeight: 500,
+                            fontSize: '1rem',
+                            color: '#333',
+                            flex: 1,
+                          }}
+                        >
+                          {index + 1} {member.nombreCompleto || `Nombre del jugador ${index + 1}`}
                         </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          {member.nombreCompleto}
-                        </Typography>
-                      </Card>
+                        {member.condicion && (
+                          <Chip
+                            label={condicionLabel}
+                            size="small"
+                            sx={{
+                              backgroundColor: condicionColor,
+                              color: 'white',
+                              fontWeight: 500,
+                              borderRadius: '12px',
+                              minWidth: 90,
+                              height: 32,
+                            }}
+                          />
+                        )}
+                      </Box>
                     );
                   })}
                 </Stack>
 
+                {/* Botones de Navegación */}
                 <Stack direction="row" spacing={2}>
                   <Button
                     variant="outlined"
-                    startIcon={<ArrowBackIcon />}
                     onClick={handleGoBackToForm}
-                    fullWidth
                     sx={{
                       borderRadius: 2,
                       textTransform: 'none',
                       fontWeight: 600,
                       py: 1.5,
+                      flex: 1,
+                      borderColor: '#E0E0E0',
+                      color: '#666',
+                      backgroundColor: '#F5F5F5',
+                      '&:hover': {
+                        borderColor: '#BDBDBD',
+                        backgroundColor: '#EEEEEE',
+                      },
                     }}
                   >
                     Anterior
@@ -627,12 +684,17 @@ export default function InscripcionesPage() {
                   <Button
                     variant="contained"
                     onClick={handleSubmit}
-                    fullWidth
                     sx={{
                       borderRadius: 2,
                       textTransform: 'none',
                       fontWeight: 600,
                       py: 1.5,
+                      flex: 1,
+                      backgroundColor: '#424242',
+                      color: 'white',
+                      '&:hover': {
+                        backgroundColor: '#616161',
+                      },
                     }}
                   >
                     Registrar
