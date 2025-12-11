@@ -38,6 +38,7 @@ interface TeamMember {
   id: string;
   nombreCompleto: string;
   condicion: string;
+  whatsapp?: string; // WhatsApp opcional del jugador
 }
 
 const condiciones = [
@@ -60,6 +61,7 @@ export default function InscripcionesPage() {
   const [step, setStep] = useState<Step>('selectCount');
   const [playerCount, setPlayerCount] = useState(4);
   const [teamName, setTeamName] = useState('');
+  const [coachWhatsApp, setCoachWhatsApp] = useState(''); // WhatsApp del entrenador
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
   const [expandedAccordion, setExpandedAccordion] = useState<string | false>(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -70,6 +72,7 @@ export default function InscripcionesPage() {
       id: `player-${i}`,
       nombreCompleto: '',
       condicion: '',
+      whatsapp: '',
     }));
     setTeamMembers(members);
     setStep('registerPlayers');
@@ -233,6 +236,22 @@ export default function InscripcionesPage() {
                     }}
                   />
 
+                  {/* WhatsApp del Entrenador */}
+                  <TextField
+                    label="WhatsApp del Entrenador"
+                    fullWidth
+                    required
+                    placeholder="+51 999 999 999"
+                    value={coachWhatsApp}
+                    onChange={(e) => setCoachWhatsApp(e.target.value)}
+                    helperText="Para recibir notificaciones de partidos y llamados"
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        borderRadius: 2,
+                      },
+                    }}
+                  />
+
                   {/* Número de jugadores con Radio Buttons */}
                   <Stack spacing={3} direction={{ xs: 'column', sm: 'row' }} alignItems="flex-end">
                     <Box sx={{ flex: 1 }}>
@@ -284,7 +303,7 @@ export default function InscripcionesPage() {
                       variant="contained"
                       onClick={handleRegisterClick}
                       size="large"
-                      disabled={!teamName.trim()}
+                      disabled={!teamName.trim() || !coachWhatsApp.trim()}
                       sx={{
                         borderRadius: 2,
                         textTransform: 'none',
@@ -430,6 +449,22 @@ export default function InscripcionesPage() {
                                 onChange={(e) =>
                                   updateMember(index, 'nombreCompleto', e.target.value)
                                 }
+                                sx={{
+                                  '& .MuiOutlinedInput-root': {
+                                    borderRadius: 2,
+                                  },
+                                }}
+                              />
+
+                              <TextField
+                                label="WhatsApp (Opcional)"
+                                fullWidth
+                                placeholder="+51 999 999 999"
+                                value={member.whatsapp || ''}
+                                onChange={(e) =>
+                                  updateMember(index, 'whatsapp', e.target.value)
+                                }
+                                helperText="Para notificaciones individuales. Si no se proporciona, se usará el WhatsApp del entrenador."
                                 sx={{
                                   '& .MuiOutlinedInput-root': {
                                     borderRadius: 2,

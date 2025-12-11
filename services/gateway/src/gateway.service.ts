@@ -17,12 +17,20 @@ export class GatewayService {
   }
 
   // Eventos
-  async getEvents() {
-    return firstValueFrom(this.eventosClient.send('get_events', {}));
+  async getEvents(organizationId?: string) {
+    const payload: any = {};
+    if (organizationId) {
+      payload.organizationId = organizationId;
+    }
+    return firstValueFrom(this.eventosClient.send('get_events', payload));
   }
 
-  async getEvent(id: string) {
-    return firstValueFrom(this.eventosClient.send('get_event', { id }));
+  async getEvent(id: string, organizationId?: string) {
+    const payload: any = { id };
+    if (organizationId) {
+      payload.organizationId = organizationId;
+    }
+    return firstValueFrom(this.eventosClient.send('get_event', payload));
   }
 
   // Inscriptions

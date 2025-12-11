@@ -5,6 +5,16 @@ import { APP_GUARD } from '@nestjs/core';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { GatewayController } from './gateway.controller';
 import { GatewayService } from './gateway.service';
+import { AdminController } from './admin.controller';
+import { AdminService } from './admin.service';
+import { RefereeController } from './referee.controller';
+import { RefereeService } from './referee.service';
+import { EventConfigController } from './controllers/event-config.controller';
+import { EventConfigService } from './services/event-config.service';
+import { TemplateController } from './controllers/template.controller';
+import { TemplateService } from './services/template.service';
+import { ProspectController } from './controllers/prospect.controller';
+import { ProspectService } from './services/prospect.service';
 
 @Module({
   imports: [
@@ -53,9 +63,21 @@ import { GatewayService } from './gateway.service';
       },
     ]),
   ],
-  controllers: [GatewayController],
+  controllers: [
+    GatewayController,
+    AdminController,
+    RefereeController,
+    EventConfigController,
+    TemplateController,
+    ProspectController,
+  ],
   providers: [
     GatewayService,
+    AdminService,
+    RefereeService,
+    EventConfigService,
+    TemplateService,
+    ProspectService,
     // Aplicar rate limiting globalmente
     {
       provide: APP_GUARD,

@@ -6,7 +6,7 @@ import {
   UpdateDateColumn,
   Index,
 } from 'typeorm';
-import { MatchStatus, MatchType } from '@wtt/common';
+import { MatchStatus, MatchType, MatchCallStatus } from '@wtt/common';
 
 @Entity('matches')
 @Index(['eventId']) // Consultas por evento
@@ -15,12 +15,18 @@ import { MatchStatus, MatchType } from '@wtt/common';
 @Index(['eventId', 'status']) // Consultas combinadas evento + estado
 @Index(['round']) // Consultas por ronda
 @Index(['refereeId']) // Consultas por árbitro
+@Index(['organizationId']) // Índice crítico para multi-tenant
+@Index(['organizationId', 'eventId']) // Búsqueda por org y evento
+@Index(['organizationId', 'status']) // Búsqueda por org y estado
 export class Match {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
   eventId: string;
+
+  @Column()
+  organizationId!: string; // FK a Organization - CRÍTICO para multi-tenant
 
   @Column({
     type: 'enum',
@@ -61,6 +67,28 @@ export class Match {
 
   @Column({ nullable: true })
   completedAt: Date;
+
+  @Column({ nullable: true })
+  categoryId: string; // Relación con EventCategory
+
+  @Column({ nullable: true })
+  scheduledTime: Date; // Horario programado
+
+  @Column({ nullable: true })
+  estimatedDuration: number; // Duración estimada en minutos
+
+  @Column({ nullable: true })
+  actualDuration: number; // Duración real en minutos
+
+  @Column({
+    type: 'enum',
+    enum: MatchCallStatus,
+    default: MatchCallStatus.NONE,
+  })
+  callStatus: MatchCallStatus; // Estado de llamados
+
+  @Column({ nullable: true, type: 'jsonb' })
+  metadata: Record<string, any>; // Datos adicionales (formato ITTF, etc.)
 
   @CreateDateColumn()
   createdAt: Date;

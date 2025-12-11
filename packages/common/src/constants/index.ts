@@ -21,13 +21,14 @@ export enum InscriptionStatus {
   REJECTED = 'rejected',
 }
 
-// User roles
+// User roles (actualizado para multi-tenant)
 export enum UserRole {
-  ADMIN = 'admin',
-  REFEREE = 'referee',
-  COACH = 'coach',
-  PLAYER = 'player',
-  VIEWER = 'viewer',
+  MASTER = 'MASTER', // Super admin del sistema
+  ADMIN = 'ADMIN', // Admin de una organización
+  REFEREE = 'REFEREE', // Árbitro
+  COACH = 'COACH', // Entrenador/Representante de equipo
+  PLAYER = 'PLAYER', // Jugador
+  VIEWER = 'VIEWER', // Solo lectura
 }
 
 // Match types
@@ -45,5 +46,49 @@ export const TEAM_LINEUP_ORDER = {
   S3: 'S3', // Singles 3
   S4: 'S4', // Singles 4
 } as const;
+
+// Table status
+export enum TableStatus {
+  AVAILABLE = 'available',      // 🟢 Disponible
+  IN_PROGRESS = 'in_progress',  // 🟡 En progreso
+  DELAYED = 'delayed',          // 🔴 Atrasada
+  LOCKED = 'locked',            // ⚪ Bloqueada
+  MAINTENANCE = 'maintenance',  // ⚫ En mantenimiento
+}
+
+// Table status colors
+export enum TableStatusColor {
+  AVAILABLE = '#4CAF50',        // Verde
+  IN_PROGRESS = '#FFC107',      // Amarillo
+  DELAYED = '#F44336',          // Rojo
+  LOCKED = '#9E9E9E',           // Gris
+  MAINTENANCE = '#424242',      // Negro
+}
+
+// Match call status
+export enum MatchCallStatus {
+  NONE = 'none',
+  FIRST_CALL = 'first_call',
+  SECOND_CALL = 'second_call',
+  THIRD_CALL = 'third_call',
+  NO_SHOW = 'no_show',
+}
+
+// Notification types
+export enum NotificationType {
+  MATCH_CALL = 'match_call',
+  MATCH_SCHEDULED = 'match_scheduled',
+  MATCH_STARTED = 'match_started',
+  MATCH_RESULT = 'match_result',
+  LINEUP_REQUIRED = 'lineup_required',
+  LINEUP_CONFIRMED = 'lineup_confirmed',
+}
+
+// Notification status
+export enum NotificationStatus {
+  PENDING = 'pending',
+  SENT = 'sent',
+  FAILED = 'failed',
+}
 
 

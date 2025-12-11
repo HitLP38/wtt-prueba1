@@ -18,36 +18,16 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const clerkPublishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+  const clerkPublishableKey =
+    process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || 'pk_test_dummy';
 
   return (
     <html lang="es">
       <body className={inter.className}>
         <ThemeProvider>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              minHeight: '100vh',
-            }}
-          >
-            <Header />
-            <Box
-              component="main"
-              sx={{
-                flexGrow: 1,
-              }}
-            >
-              {clerkPublishableKey ? (
-                <ClerkProvider publishableKey={clerkPublishableKey}>
-                  {children}
-                </ClerkProvider>
-              ) : (
-                children
-              )}
-            </Box>
-            <Footer />
-          </Box>
+          <ClerkProvider publishableKey={clerkPublishableKey}>
+            {children}
+          </ClerkProvider>
         </ThemeProvider>
       </body>
     </html>

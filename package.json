@@ -9,7 +9,9 @@
     "apps/*"
   ],
   "scripts": {
-    "dev": "turbo run dev",
+    "dev": "turbo run dev --concurrency=15",
+    "dev:web": "cd apps/web && npm run dev",
+    "dev:gateway": "cd services/gateway && npm run dev",
     "build": "turbo run build",
     "lint": "turbo run lint",
     "test": "turbo run test",
@@ -17,7 +19,8 @@
     "format": "prettier --write \"**/*.{ts,js,json,md}\"",
     "docker:up": "docker-compose up -d",
     "docker:down": "docker-compose down",
-    "docker:logs": "docker-compose logs -f"
+    "docker:logs": "docker-compose logs -f",
+    "install:all": "npm install && cd packages/common && npm install && npm run build && cd ../.."
   },
   "devDependencies": {
     "@types/node": "^20.10.0",

@@ -16,10 +16,17 @@ async function bootstrap() {
   // Global prefix
   app.setGlobalPrefix('api');
   
-  // CORS
+  // CORS - Permitir cualquier origen en desarrollo, o el específico en producción
+  const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
+  const corsOrigin = isProduction
+    ? frontendUrl
+    : true; // Permitir todos los orígenes en desarrollo
+  
   app.enableCors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+    origin: corsOrigin,
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
   });
   
   // Validation
@@ -32,11 +39,13 @@ async function bootstrap() {
   );
   
   const port = process.env.PORT || 3001;
-  await app.listen(port);
+  // Escuchar en todas las interfaces (0.0.0.0) para permitir conexiones externas
+  await app.listen(port, '0.0.0.0');
   
-  logger.log(`🚀 Gateway running on: http://localhost:${port}`);
+  logger.log(`🚀 Gateway running on: http://0.0.0.0:${port}`);
   logger.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
   logger.log(`🛡️ Rate Limiting: Enabled (100 req/min)`);
+  logger.log(`🌐 CORS: ${isProduction ? `Restricted to ${corsOrigin}` : 'Allowed from any origin (development)'}`);
 }
 
 bootstrap();

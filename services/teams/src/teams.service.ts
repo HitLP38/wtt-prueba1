@@ -13,13 +13,48 @@ export class TeamsService {
     private lineupRepository: Repository<TeamLineup>,
   ) {}
 
+  /**
+   * Crear equipo (debe incluir organizationId)
+   */
   async create(data: Partial<Team>) {
+    if (!data.organizationId) {
+      throw new Error('organizationId es requerido');
+    }
     const team = this.teamRepository.create(data);
     return this.teamRepository.save(team);
   }
 
-  async findOne(id: string) {
-    return this.teamRepository.findOne({ where: { id } });
+  /**
+   * Buscar equipo por ID y organización
+   * CRÍTICO: Validar que pertenezca a la organización
+   */
+  async findOne(id: string, organizationId?: string) {
+    const where: any = { id };
+    if (organizationId) {
+      where.organizationId = organizationId;
+    }
+    return this.teamRepository.findOne({ where });
+  }
+
+  /**
+   * Buscar equipos por evento y organización
+   * CRÍTICO: Siempre filtrar por organizationId
+   */
+  async findByEvent(eventId: string, organizationId: string) {
+    return this.teamRepository.find({
+      where: { eventId, organizationId },
+      order: { createdAt: 'DESC' },
+    });
+  }
+
+  /**
+   * Buscar todos los equipos de una organización
+   */
+  async findByOrganization(organizationId: string) {
+    return this.teamRepository.find({
+      where: { organizationId },
+      order: { createdAt: 'DESC' },
+    });
   }
 
   async createLineup(data: Partial<TeamLineup>) {

@@ -5,6 +5,7 @@ import { TeamsController } from './teams.controller';
 import { TeamsService } from './teams.service';
 import { Team } from './entities/team.entity';
 import { TeamLineup } from './entities/team-lineup.entity';
+import { TeamPlayer } from './entities/team-player.entity';
 
 @Module({
   imports: [
@@ -16,10 +17,10 @@ import { TeamLineup } from './entities/team-lineup.entity';
       username: process.env.DB_USER || 'wtt_user',
       password: process.env.DB_PASSWORD || 'wtt_password',
       database: process.env.DB_NAME || 'wtt_db',
-      entities: [Team, TeamLineup],
+      entities: [Team, TeamLineup, TeamPlayer],
       synchronize: process.env.NODE_ENV !== 'production',
     }),
-    TypeOrmModule.forFeature([Team, TeamLineup]),
+    TypeOrmModule.forFeature([Team, TeamLineup, TeamPlayer]),
   ],
   controllers: [TeamsController],
   providers: [TeamsService],
