@@ -17,6 +17,23 @@ const pageTitles: Record<string, string> = {
   '/admin/materiales': 'Materiales',
   '/admin/arbitros': 'Arbitros',
   '/admin/costos': 'Costos',
+  '/admin/configuracion-evento': 'Configuración',
+  '/admin/tabla-horaria': 'Tabla Horaria',
+  '/admin/logistica/materiales': 'Materiales',
+  '/admin/logistica/personal': 'Personal',
+  '/admin/ranking/internacional': 'Ranking Internacional',
+  '/admin/ranking/nacional': 'Ranking Nacional',
+  '/admin/sorteos/config': 'Configuración Sorteo',
+  '/admin/analisis/participantes': 'Análisis Participantes',
+  '/admin/analisis/financiero': 'Análisis Financiero',
+  '/admin/analisis/tiempos': 'Análisis Tiempos',
+  '/admin/partidos/inscritos': 'Inscritos',
+  '/admin/partidos/series': 'Series',
+  '/admin/partidos/llaves': 'Llaves',
+  '/admin/partidos/resultados': 'Resultados',
+  '/admin/asistencia/personal': 'Asistencia Personal',
+  '/admin/costos/personal': 'Costos Personal',
+  '/admin/costos/materiales': 'Costos Materiales',
 };
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
