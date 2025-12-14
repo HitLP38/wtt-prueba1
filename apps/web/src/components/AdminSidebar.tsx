@@ -109,9 +109,30 @@ const menuSections: MenuSection[] = [
     title: 'Partidos',
     items: [
       { label: 'Inscritos', icon: InscritosIcon, href: '/admin/partidos/inscritos' },
-      { label: 'Series', icon: SeriesIcon, href: '/admin/partidos/series' },
-      { label: 'Llaves', icon: LlavesIcon, href: '/admin/partidos/llaves' },
-      { label: 'Resultados', icon: ResultadosIcon, href: '/admin/partidos/resultados' },
+      {
+        label: 'Series',
+        icon: SeriesIcon,
+        children: [
+          { label: 'Generar', icon: SettingsIcon, href: '/admin/partidos/series/generar' },
+          { label: 'Visualizaciones', icon: AnalisisIcon, href: '/admin/partidos/series/visualizaciones' },
+        ],
+      },
+      {
+        label: 'Llaves',
+        icon: LlavesIcon,
+        children: [
+          { label: 'Generar', icon: SettingsIcon, href: '/admin/partidos/llaves/generar' },
+          { label: 'Visualizaciones', icon: AnalisisIcon, href: '/admin/partidos/llaves/visualizaciones' },
+        ],
+      },
+      {
+        label: 'Resultados',
+        icon: ResultadosIcon,
+        children: [
+          { label: 'Series', icon: SeriesIcon, href: '/admin/partidos/resultados/series' },
+          { label: 'Llaves', icon: LlavesIcon, href: '/admin/partidos/resultados/llaves' },
+        ],
+      },
     ],
   },
   {

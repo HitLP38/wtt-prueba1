@@ -18,16 +18,22 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const clerkPublishableKey =
-    process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || 'pk_test_dummy';
+  const clerkPublishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+  const isClerkEnabled = clerkPublishableKey && 
+    clerkPublishableKey !== 'pk_test_dummy' && 
+    clerkPublishableKey.length > 20;
 
   return (
     <html lang="es">
       <body className={inter.className}>
         <ThemeProvider>
-          <ClerkProvider publishableKey={clerkPublishableKey}>
-            {children}
-          </ClerkProvider>
+          {isClerkEnabled ? (
+            <ClerkProvider publishableKey={clerkPublishableKey}>
+              {children}
+            </ClerkProvider>
+          ) : (
+            <>{children}</>
+          )}
         </ThemeProvider>
       </body>
     </html>
